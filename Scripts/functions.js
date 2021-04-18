@@ -1,13 +1,14 @@
 let url = 'https://softwiki-75956-default-rtdb.europe-west1.firebasedatabase.app/'
 function registerUser(context) {
     let { email, password, rePassword } = context.params;
+
     if (password == rePassword) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(function ({ user: { uid, email } }) {
+            .then(function ({ user: {uid, email}}) {
                 localStorage.setItem('userInfo', JSON.stringify({ uid, email }))
             })
-            .then(function () { context.redirect('/home'); })
-            .catch(function (err) { console.log(err); })
+            .then(function () {context.redirect('/home');})
+            .catch(function (err) {console.log(err);})
     }
 }
 
@@ -15,10 +16,10 @@ function loginUser(context) {
     let { email, password } = context.params;
 
     firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function ({ user: { uid, email } }) {
+        .then(function ({ user: {uid, email}}) {
             localStorage.setItem('userInfo', JSON.stringify({ uid, email }))
         })
-        .then(function () { context.redirect('/home') })
+        .then(function () {context.redirect('/home');})
         .catch(function (err) { console.log(err); })
 }
 
@@ -26,7 +27,7 @@ function articles(context) {
     context.javaScript = {};
     context.cSharp = {};
     context.java = {};
-    context.python = {};
+    context.pyton = {};
 
     fetch(`${url}/articles.json`)
         .then(res => res.json())
@@ -42,8 +43,8 @@ function articles(context) {
                     context.cSharp[key] = data[key];
                 } else if (tolower == 'java') {
                     context.java[key] = data[key];
-                } else if (tolower == 'python') {
-                    context.python[key] = data[key];
+                } else if (tolower == 'pyton') {
+                    context.pyton[key] = data[key];
                 }
             }
         })
@@ -53,7 +54,7 @@ function articles(context) {
                 context.login = true;
             }
             if (!context.login) {
-                context.redirect('/register')
+                context.redirect('/register');
                 return
             }
             context.loadPartials({
@@ -61,8 +62,23 @@ function articles(context) {
                 'footer': './templates/footer.hbs'
             })
                 .then(function () {
-                    this.partial('./templates/home.hbs')
+                    this.partial('./templates/home.hbs');
                 })
         })
-        .catch(function (err) { console.log(err) })
+        .catch(function (err) { console.log(err);})
+}
+
+function createArticles(context) {
+    let {params:{title,content,category}} = context;
+    let email = JSON.parse(localStorage.getItem('userInfo')).email;
+
+    if (title != '' && content != '' && category != '' && email != '') {
+        fetch(`${url}/articles.json`,{
+            headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+            body: JSON.stringify({title,content,category,email})
+        })
+        .then((res) => {context.redirect('/home');})
+    }
+
 }

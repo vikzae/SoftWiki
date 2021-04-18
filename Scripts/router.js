@@ -44,10 +44,33 @@ let router = Sammy('#main', function() {
             'footer': './templates/footer.hbs'
         })
         .then(function() {
-            context.partial('./templates/edit.hbs')
+            this.partial('./templates/login.hbs')
         })
     })
 
+    this.get('/logout', function(context) {
+        localStorage.removeItem('userInfo');
+        context.redirect('/login');
+    })
+
+    this.get('/create', function(context) { 
+        let userInfo = localStorage.getItem('userInfo');
+        if (userInfo) {
+            context.login = true;
+        }
+        
+        context.loadPartials({
+            'header': './templates/header.hbs',
+            'footer': './templates/footer.hbs'
+        })
+        .then(function() {
+            this.partial('./templates/create.hbs')
+        })
+    })
+
+    this.post('/create', function(context) {
+        createArticles(context)
+    })
     this.post('/register', function(context) {
         registerUser(context)
     })
