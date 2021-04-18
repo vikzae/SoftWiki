@@ -18,7 +18,7 @@ let router = Sammy('#main', function() {
             'footer': './templates/footer.hbs'
         })
         .then(function() {
-            this.partial('./templates/register.hbs')
+            this.partial('./templates/register.hbs');
         })
     })
     
@@ -58,7 +58,7 @@ let router = Sammy('#main', function() {
         if (userInfo) {
             context.login = true;
         }
-        
+
         context.loadPartials({
             'header': './templates/header.hbs',
             'footer': './templates/footer.hbs'

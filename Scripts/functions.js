@@ -20,7 +20,7 @@ function loginUser(context) {
             localStorage.setItem('userInfo', JSON.stringify({ uid, email }))
         })
         .then(function () {context.redirect('/home');})
-        .catch(function (err) { console.log(err); })
+        .catch(function (err) { console.log(err);})
 }
 
 function articles(context) {
