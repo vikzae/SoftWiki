@@ -22,8 +22,7 @@ let router = Sammy('#main', function() {
         })
     })
     
-    this.get('/login', function(context) {
-        
+    this.get('/login', function(context) {  
         context.loadPartials({
             'header': './templates/header.hbs',
             'footer': './templates/footer.hbs'
@@ -38,13 +37,13 @@ let router = Sammy('#main', function() {
         
     })
 
-    this.get('/edit/:id', function(context) {
+    this.get('#/edit/:id', function(context) {
         context.loadPartials({
             'header': './templates/header.hbs',
             'footer': './templates/footer.hbs'
         })
         .then(function() {
-            this.partial('./templates/login.hbs')
+            this.partial('./templates/edit.hbs')
         })
     })
 
