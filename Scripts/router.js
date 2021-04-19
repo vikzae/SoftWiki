@@ -38,13 +38,12 @@ let router = Sammy('#main', function() {
     })
 
     this.get('#/edit/:id', function(context) {
-        context.loadPartials({
-            'header': './templates/header.hbs',
-            'footer': './templates/footer.hbs'
-        })
-        .then(function() {
-            this.partial('./templates/edit.hbs')
-        })
+        editId(context)
+    })
+
+    this.get('#/details/:id', function(context) {
+        detailsId(context)
+        
     })
 
     this.get('/logout', function(context) {
@@ -65,6 +64,14 @@ let router = Sammy('#main', function() {
         .then(function() {
             this.partial('./templates/create.hbs')
         })
+    })
+
+    this.get('#/delete/:id', function(context) {
+        deleteArticle(context)
+    })
+
+    this.post('/edited', function(context) {
+        edited(context)
     })
 
     this.post('/create', function(context) {
